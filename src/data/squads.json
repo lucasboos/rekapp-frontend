@@ -1,0 +1,70 @@
+{
+    "data": [
+        {
+            "team": "Setor de Marketing",
+            "machines": [
+                {
+                    "name": "Clebinho Testo",
+                    "role": "Publicidade"
+                },
+                {
+                    "name": "Clebinho Testo",
+                    "role": "Publicidade"
+                },
+                {
+                    "name": "Clebinho Testo",
+                    "role": "Publicidade"
+                },
+                {
+                    "name": "Clebinho Testo",
+                    "role": "Publicidade"
+                },
+                {
+                    "name": "Clebinho Testo",
+                    "role": "Publicidade"
+                },
+                {
+                    "name": "Clebinho Testo",
+                    "role": "Publicidade"
+                },
+                {
+                    "name": "Clebinho Testo",
+                    "role": "Publicidade"
+                }
+            ]
+        },
+        {
+            "team": "Desenvolvimento",
+            "machines": [
+                {
+                    "name": "Rosevelt New",
+                    "role": "Desenvolvedor"
+                },
+                {
+                    "name": "Rosevelt New",
+                    "role": "Desenvolvedor"
+                },
+                {
+                    "name": "Rosevelt New",
+                    "role": "Desenvolvedor"
+                },
+                {
+                    "name": "Rosevelt New",
+                    "role": "Desenvolvedor"
+                },
+                {
+                    "name": "Rosevelt New",
+                    "role": "Desenvolvedor"
+                },
+                {
+                    "name": "Rosevelt New",
+                    "role": "Desenvolvedor"
+                },
+                {
+                    "name": "Rosevelt New",
+                    "role": "Desenvolvedor"
+                }
+            ]
+        }
+    ]
+}
