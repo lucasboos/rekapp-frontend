@@ -1,36 +1,42 @@
 import PropTypes from 'prop-types';
 
 // material-ui
-import { Grid, Stack, Typography } from '@mui/material';
-import { UserAddOutlined } from '@ant-design/icons';
+import { Grid, Stack, Typography, Link } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
 import ComponentSkeleton from './ComponentSkeleton';
+import Modal from 'components/modal/Modal';
 
 // data
 import squads from 'data/squads.json'
 
 
-function ShadowBox({ add, name, role, sx }) {
-    return (
-        <MainCard border={true} sx={sx} >
-            <Stack spacing={1} justifyContent="center" alignItems="center">
-                { add ?
-                    <UserAddOutlined />
-                :
-                    <>
+function ShadowBox({ addMachine, name, role, sx }) {
+    if (addMachine) {
+        return (
+            <MainCard border={true} sx={sx} >
+                <Stack spacing={1} justifyContent="center" alignItems="center">
+                    <Modal />
+                </Stack>
+            </MainCard>
+        );
+    } else {
+        return (
+            <Link href="#" underline="none">
+                <MainCard border={true} sx={sx} >
+                    <Stack spacing={1} justifyContent="center" alignItems="center">
                         <Typography variant="h6">{name}</Typography>
                         <Typography variant="subtitle1">{role}</Typography>
-                    </>
-                }
-            </Stack>
-        </MainCard>
-    );
+                    </Stack>
+                </MainCard>
+            </Link>
+        );
+    }
 };
 
 ShadowBox.propTypes = {
-    add: PropTypes.bool,
+    addMachine: PropTypes.bool,
     name: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
     sx: PropTypes.object,
@@ -47,7 +53,7 @@ const Machines = () => {
                                 <Grid container spacing={3}>
                                     <Grid item xs={1} sm={1} md={1} lg={1} >
                                         <ShadowBox 
-                                            add 
+                                            addMachine 
                                             sx={{
                                                 height: "100%",
                                                 display: "flex",

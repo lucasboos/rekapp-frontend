@@ -26,6 +26,10 @@ const MainRoutes = {
     element: <MainLayout />,
     children: [
         {
+            path: '/',
+            element: <Machines />
+        },
+        {
             path: 'dashboardefault',
             element: <DashboardDefault />
         },
@@ -58,10 +62,6 @@ const MainRoutes = {
             path: 'icons/ant',
             element: <AntIcons />
         },
-        {
-            path: '/',
-            element: <Machines />
-        }
     ]
 };
 
