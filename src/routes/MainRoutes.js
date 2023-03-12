@@ -18,6 +18,7 @@ const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons'
 
 // render - machines
 const Machines = Loadable(lazy(() => import('pages/machines/Machines')));
+const MachineInfo = Loadable(lazy(() => import('pages/machines/MachineInfo')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -28,6 +29,10 @@ const MainRoutes = {
         {
             path: '/',
             element: <Machines />
+        },
+        {
+            path: 'machines/info',
+            element: <MachineInfo />
         },
         {
             path: 'dashboardefault',
