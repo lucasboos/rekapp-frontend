@@ -10,11 +10,10 @@ import {
   Stack,
   Dialog,
   DialogContent,
-  DialogActions
+  DialogActions,
+  Select,
+  MenuItem
 } from '@mui/material';
-
-// ant-design
-import { UserAddOutlined } from '@ant-design/icons';
 
 // third party
 import * as Yup from 'yup';
@@ -23,8 +22,10 @@ import { Formik } from 'formik';
 // project import
 import AnimateButton from 'components/@extended/AnimateButton';
 
+// data
+import squads from 'data/squads.json'
 
-export default function FormDialog() {
+export default function ModalArea() {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -37,21 +38,27 @@ export default function FormDialog() {
 
   return (
     <div>
-      <Button onClick={handleClickOpen}>
-        <UserAddOutlined />
-      </Button>
+      <AnimateButton>
+        <Button
+            disableElevation
+            size="large"
+            type="button"
+            variant="contained"
+            color="primary"
+            onClick={handleClickOpen}
+        >
+            Adicionar setor
+        </Button>
+      </AnimateButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <Formik
                 initialValues={{
                     name: '',
-                    role: '',
-                    ipAddress: ''
+                    areaUp: 99,
                 }}
                 validationSchema={Yup.object().shape({
-                    name: Yup.string().max(255).required('É necessário preencher o nome'),
-                    role: Yup.string().max(255).required('É necessário preencher o cargo'),
-                    ipAddress: Yup.string().max(255).required('É necessário preencher o endereço IP'),
+                    name: Yup.string().max(255).required('É necessário preencher o nome do setor'),
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -72,15 +79,15 @@ export default function FormDialog() {
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="name-machine">Nome*</InputLabel>
+                                    <InputLabel htmlFor="name-area">Nome da setor*</InputLabel>
                                     <OutlinedInput
-                                        id="name-machine"
+                                        id="name-area"
                                         type="name"
                                         value={values.name}
                                         name="name"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        placeholder="John"
+                                        placeholder="Setor de desenvolvimento"
                                         fullWidth
                                         error={Boolean(touched.name && errors.name)}
                                     />
@@ -93,44 +100,20 @@ export default function FormDialog() {
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="role-machine">Cargo*</InputLabel>
-                                    <OutlinedInput
-                                        id="role-machine"
-                                        type="role"
-                                        value={values.role}
-                                        name="role"
-                                        onBlur={handleBlur}
+                                    <InputLabel htmlFor="area-up">Setor superior</InputLabel>
+                                    <Select
+                                        id="area-up"
                                         onChange={handleChange}
-                                        placeholder="Desenvolvedor"
-                                        fullWidth
-                                        error={Boolean(touched.role && errors.role)}
-                                    />
-                                    {touched.role && errors.role && (
-                                        <FormHelperText error id="helper-text-role-machine">
-                                            {errors.role}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={12} md={12}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="ipAddress-machine">Endereço IP*</InputLabel>
-                                    <OutlinedInput
-                                        fullWidth
-                                        error={Boolean(touched.ipAddress && errors.ipAddress)}
-                                        id="ipAddress-machine"
-                                        value={values.ipAddress}
-                                        name="ipAddress"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="182.098.0.1"
-                                        inputProps={{}}
-                                    />
-                                    {touched.ipAddress && errors.ipAddress && (
-                                        <FormHelperText error id="helper-text-ipAddress-machine">
-                                            {errors.ipAddress}
-                                        </FormHelperText>
-                                    )}
+                                        value={values.areaUp}
+                                        name="areaUp"
+                                    >
+                                        <MenuItem value={99}>Sem setor superior</MenuItem>
+                                        {
+                                            squads.data.map((el) => (
+                                                <MenuItem value={el.team}>{el.team}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
                                 </Stack>
                             </Grid>
                             {errors.submit && (
@@ -149,7 +132,7 @@ export default function FormDialog() {
                                         variant="contained"
                                         color="primary"
                                     >
-                                        Adicionar
+                                        Salvar
                                     </Button>
                                 </AnimateButton>
                             </Grid>

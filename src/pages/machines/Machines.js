@@ -7,6 +7,7 @@ import { Grid, Stack, Typography, Link } from '@mui/material';
 import MainCard from 'components/MainCard';
 import ComponentSkeleton from './ComponentSkeleton';
 import Modal from 'components/modal/Modal';
+import ModalArea from 'components/modal/ModalArea';
 
 // data
 import squads from 'data/squads.json'
@@ -45,6 +46,14 @@ ShadowBox.propTypes = {
 const Machines = () => {
     return (
         <ComponentSkeleton>
+            <Grid item xs={12} sx={{ mb: 2.25 }}>
+                <Stack
+                    direction="row"
+                    spacing={1}
+                >
+                    <ModalArea />
+                </Stack>
+            </Grid>
             <Grid container spacing={3}>
                 {
                     squads.data.map((el) => (

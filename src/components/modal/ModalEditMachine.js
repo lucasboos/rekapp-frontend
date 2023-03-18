@@ -169,7 +169,7 @@ export default function ModalEditMachine() {
                                         size="large"
                                         type="submit"
                                         variant="contained"
-                                        color="success"
+                                        color="primary"
                                     >
                                         Salvar
                                     </Button>
