@@ -24,7 +24,8 @@ import { Formik } from 'formik';
 import AnimateButton from 'components/@extended/AnimateButton';
 
 
-export default function FormDialog() {
+export default function ModalCollaborator() {
+//   const axios = require('axios');
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -44,18 +45,33 @@ export default function FormDialog() {
         <DialogContent>
           <Formik
                 initialValues={{
-                    name: '',
+                    email: '',
+                    firstName: '',
+                    lastName: '',
                     role: '',
-                    ipAddress: ''
+                    passwd: '',
+                    area_id: '',
+                    user_role: '',
+                    machine_id: ''
                 }}
                 validationSchema={Yup.object().shape({
-                    name: Yup.string().max(255).required('É necessário preencher o nome'),
+                    email: Yup.string().max(255).required('É necessário preencher o email'),
+                    firstName: Yup.string().max(255).required('É necessário preencher o nome'),
+                    lastName: Yup.string().max(255).required('É necessário preencher o sobrenome'),
                     role: Yup.string().max(255).required('É necessário preencher o cargo'),
-                    ipAddress: Yup.string().max(255).required('É necessário preencher o endereço IP'),
                 })}
-                onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+                onSubmit={async (values) => {
                     try {
                       console.log(values)
+                    //   await axios.post((`http://rekapp.net:8090/users`), values, {
+                    //     headers: {
+                    //     Authorization: `Bearer ${tag}`,
+                    //     }
+                    //     }).then(function (response) {
+                    //         console.log(response)
+                    //     }).catch(function (error) {
+                    //         console.log(error)
+                    //     });
                         // setStatus({ success: false });
                         // setSubmitting(false);
                     } catch (err) {
@@ -72,30 +88,72 @@ export default function FormDialog() {
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="name-machine">Nome*</InputLabel>
+                                    <InputLabel htmlFor="fname-collaborator">Nome*</InputLabel>
                                     <OutlinedInput
-                                        id="name-machine"
+                                        id="fname-collaborator"
                                         type="name"
-                                        value={values.name}
-                                        name="name"
+                                        value={values.firstName}
+                                        name="firstName"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         placeholder="John"
                                         fullWidth
-                                        error={Boolean(touched.name && errors.name)}
+                                        error={Boolean(touched.firstName && errors.firstName)}
                                     />
-                                    {touched.name && errors.name && (
-                                        <FormHelperText error id="helper-text-name-machine">
-                                            {errors.name}
+                                    {touched.firstName && errors.firstName && (
+                                        <FormHelperText error id="helper-text-fname-collaborator">
+                                            {errors.firstName}
                                         </FormHelperText>
                                     )}
                                 </Stack>
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="role-machine">Cargo*</InputLabel>
+                                    <InputLabel htmlFor="lname-collaborator">Sobrenome*</InputLabel>
                                     <OutlinedInput
-                                        id="role-machine"
+                                        id="lname-collaborator"
+                                        type="name"
+                                        value={values.lastName}
+                                        name="lastName"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        placeholder="Wick"
+                                        fullWidth
+                                        error={Boolean(touched.lastName && errors.lastName)}
+                                    />
+                                    {touched.lastName && errors.lastName && (
+                                        <FormHelperText error id="helper-text-lname-collaborator">
+                                            {errors.lastName}
+                                        </FormHelperText>
+                                    )}
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={12} md={12}>
+                                <Stack spacing={1}>
+                                    <InputLabel htmlFor="email-collaborator">E-mail*</InputLabel>
+                                    <OutlinedInput
+                                        id="email-collaborator"
+                                        type="email"
+                                        value={values.email}
+                                        name="email"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        placeholder="john@email.com"
+                                        fullWidth
+                                        error={Boolean(touched.email && errors.email)}
+                                    />
+                                    {touched.email && errors.email && (
+                                        <FormHelperText error id="helper-text-email-collaborator">
+                                            {errors.email}
+                                        </FormHelperText>
+                                    )}
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={12} md={12}>
+                                <Stack spacing={1}>
+                                    <InputLabel htmlFor="role-collaborator">Cargo*</InputLabel>
+                                    <OutlinedInput
+                                        id="role-collaborator"
                                         type="role"
                                         value={values.role}
                                         name="role"
@@ -106,29 +164,8 @@ export default function FormDialog() {
                                         error={Boolean(touched.role && errors.role)}
                                     />
                                     {touched.role && errors.role && (
-                                        <FormHelperText error id="helper-text-role-machine">
+                                        <FormHelperText error id="helper-text-role-collaborator">
                                             {errors.role}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={12} md={12}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="ipAddress-machine">Endereço IP*</InputLabel>
-                                    <OutlinedInput
-                                        fullWidth
-                                        error={Boolean(touched.ipAddress && errors.ipAddress)}
-                                        id="ipAddress-machine"
-                                        value={values.ipAddress}
-                                        name="ipAddress"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="182.098.0.1"
-                                        inputProps={{}}
-                                    />
-                                    {touched.ipAddress && errors.ipAddress && (
-                                        <FormHelperText error id="helper-text-ipAddress-machine">
-                                            {errors.ipAddress}
                                         </FormHelperText>
                                     )}
                                 </Stack>

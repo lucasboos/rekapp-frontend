@@ -6,7 +6,7 @@ import { Grid, Stack, Typography, Link } from '@mui/material';
 // project import
 import MainCard from 'components/MainCard';
 import ComponentSkeleton from './ComponentSkeleton';
-import Modal from 'components/modal/Modal';
+import ModalCollaborator from 'components/modal/ModalCollaborator';
 import ModalArea from 'components/modal/ModalArea';
 
 // data
@@ -18,7 +18,7 @@ function ShadowBox({ addMachine, name, role, sx }) {
         return (
             <MainCard border={true} sx={sx} >
                 <Stack spacing={1} justifyContent="center" alignItems="center">
-                    <Modal />
+                    <ModalCollaborator />
                 </Stack>
             </MainCard>
         );
