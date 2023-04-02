@@ -24,7 +24,7 @@ function ShadowBox({ addMachine, name, role, sx }) {
         );
     } else {
         return (
-            <Link href="free/machines/info" underline="none">
+            <Link href="machines/info" underline="none">
                 <MainCard border={true} sx={sx} >
                     <Stack spacing={1} justifyContent="center" alignItems="center">
                         <Typography variant="h6">{name}</Typography>
