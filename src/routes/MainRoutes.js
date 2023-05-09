@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { Navigate } from 'react-router-dom';
 
 // project import
 import Loadable from 'components/Loadable';
@@ -8,7 +9,7 @@ import MainLayout from 'layout/MainLayout';
 const Machines = Loadable(lazy(() => import('pages/machines/Machines')));
 const MachineInfo = Loadable(lazy(() => import('pages/machines/MachineInfo')));
 
-// ==============================|| MAIN ROUTING ||============================== //
+const isAuthenticated = localStorage.getItem('token');
 
 const MainRoutes = {
     path: '/',
@@ -16,11 +17,11 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <Machines />
+            element: isAuthenticated ? <Machines /> : <Navigate to='/login' />
         },
         {
             path: 'machines/info',
-            element: <MachineInfo />
+            element: isAuthenticated ? <MachineInfo /> : <Navigate to='/login' />
         }
     ]
 };

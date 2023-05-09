@@ -1,32 +1,16 @@
-import React from 'react';
-
-// material-ui
-import {
-    Button,
-    FormHelperText,
-    Grid,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    Stack,
-} from '@mui/material';
-
-// third party
+import React, { useState } from 'react';
+import { Button, FormHelperText, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// project import
-import AnimateButton from 'components/@extended/AnimateButton';
-
-// assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import AnimateButton from 'components/@extended/AnimateButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
-
     const [showPassword, setShowPassword] = React.useState(false);
+
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
@@ -50,12 +34,38 @@ const AuthLogin = () => {
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
                         setStatus({ success: false });
-                        setSubmitting(false);
+                        setSubmitting(true);
+                        
+                        const response = await fetch('http://127.0.0.1:5000/api/v1/user/signin', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: values.email,
+                                password: values.password
+                            })
+                        });
+                        
+                        const data = await response.json();
+                
+                        if (response.ok) {
+                            localStorage.setItem('token', data.token);
+                            setStatus({ success: true });
+                            window.location.href = '/';
+                        } else if (response.status === 401) {
+                            toast.error('Credenciais inválidas');
+                            setErrors({ submit: data.error });
+                            setStatus({ success: false });
+                        } else {
+                            setErrors({ submit: data.error });
+                            setStatus({ success: false });
+                        }
                     } catch (err) {
                         setStatus({ success: false });
                         setErrors({ submit: err.message });
-                        setSubmitting(false);
                     }
+                    setSubmitting(false);
                 }}
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
@@ -141,6 +151,7 @@ const AuthLogin = () => {
                     </form>
                 )}
             </Formik>
+            <ToastContainer />
         </>
     );
 };
