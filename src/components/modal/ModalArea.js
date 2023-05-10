@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import {
@@ -22,11 +22,15 @@ import { Formik } from 'formik';
 // project import
 import AnimateButton from 'components/@extended/AnimateButton';
 
-// data
-import squads from 'data/squads.json'
+// toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function ModalArea() {
   const [open, setOpen] = useState(false);
+  const [squadsData, setSquadsData] = useState([]);
+  const token = localStorage.getItem('token')
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,8 +40,32 @@ export default function ModalArea() {
     setOpen(false);
   };
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/v1/area/squads', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSquadsData(data);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
   return (
     <div>
+      <ToastContainer />
       <AnimateButton>
         <Button
             disableElevation
@@ -55,22 +83,49 @@ export default function ModalArea() {
           <Formik
                 initialValues={{
                     name: '',
-                    areaUp: 99,
+                    areaUp: -1,
                 }}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().max(255).required('É necessário preencher o nome do setor'),
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                      console.log(values)
-                        // setStatus({ success: false });
-                        // setSubmitting(false);
+                        setStatus({ success: false });
+                        setSubmitting(true);
+
+                        const response = await fetch('http://127.0.0.1:5000/api/v1/area/create', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                name: values.name,
+                                area_up_id: values.areaUp == -1 ? null : values.areaUp
+                            })
+                        });
+
+                        const data = await response.json();
+                
+                        if (response.ok) {
+                            toast.success('Setor adicionado com sucesso!');
+                            fetchData();
+                            setStatus({ success: true });
+                        } else if (response.status === 401) {
+                            toast.error('Setor já existe.');
+                            setErrors({ submit: data.error });
+                            setStatus({ success: false });
+                        }
+                        else {
+                            toast.error(data.error);
+                            setErrors({ submit: data.error });
+                            setStatus({ success: false });
+                        }
                     } catch (err) {
-                        console.error(err);
-                        // setStatus({ success: false });
-                        // setErrors({ submit: err.message });
-                        // setSubmitting(false);
+                        setStatus({ success: false });
+                        setErrors({ submit: err.message });
                     }
+                    setSubmitting(false);
                 }}
                 
             >
@@ -107,12 +162,10 @@ export default function ModalArea() {
                                         value={values.areaUp}
                                         name="areaUp"
                                     >
-                                        <MenuItem value={99}>Sem setor superior</MenuItem>
-                                        {
-                                            squads.data.map((el) => (
-                                                <MenuItem value={el.team}>{el.team}</MenuItem>
-                                            ))
-                                        }
+                                        <MenuItem value={-1}>Sem setor superior</MenuItem>
+                                        {squadsData.map((el) => (
+                                            <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>
+                                        ))}
                                     </Select>
                                 </Stack>
                             </Grid>
