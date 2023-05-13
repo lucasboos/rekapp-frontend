@@ -10,11 +10,10 @@ import {
   Stack,
   Dialog,
   DialogContent,
-  DialogActions
+  DialogActions,
+  Select,
+  MenuItem
 } from '@mui/material';
-
-// ant-design
-import { UserAddOutlined } from '@ant-design/icons';
 
 // third party
 import * as Yup from 'yup';
@@ -22,10 +21,27 @@ import { Formik } from 'formik';
 
 // project import
 import AnimateButton from 'components/@extended/AnimateButton';
+import { fetchUsers } from './ModalAddCollaborator';
+
+// toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
-export default function ModalCollaborator() {
-//   const axios = require('axios');
+const system_role = [
+    {
+        id: 1,
+        name: 'Admin'
+    },
+    {
+        id: 2,
+        name: 'Gestor'
+    },
+]
+
+
+export default function ModalCollaborator(props) {
+  const token = localStorage.getItem('token')
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -38,48 +54,76 @@ export default function ModalCollaborator() {
 
   return (
     <div>
-      <Button onClick={handleClickOpen}>
-        <UserAddOutlined />
-      </Button>
+        <ToastContainer />
+        <AnimateButton>
+            <Button
+                disableElevation
+                size="large"
+                type="button"
+                variant="contained"
+                color="primary"
+                onClick={handleClickOpen}
+            >
+                Adicionar colaborador
+            </Button>
+        </AnimateButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <Formik
                 initialValues={{
                     email: '',
-                    firstName: '',
-                    lastName: '',
-                    role: '',
-                    passwd: '',
+                    first_name: '',
+                    last_name: '',
+                    job_role: '',
+                    password: '',
                     area_id: '',
-                    user_role: '',
+                    role_id: '',
                     machine_id: ''
                 }}
                 validationSchema={Yup.object().shape({
                     email: Yup.string().max(255).required('É necessário preencher o email'),
-                    firstName: Yup.string().max(255).required('É necessário preencher o nome'),
-                    lastName: Yup.string().max(255).required('É necessário preencher o sobrenome'),
-                    role: Yup.string().max(255).required('É necessário preencher o cargo'),
+                    first_name: Yup.string().max(255).required('É necessário preencher o nome'),
+                    last_name: Yup.string().max(255).required('É necessário preencher o sobrenome'),
+                    job_role: Yup.string().max(255).required('É necessário preencher o cargo'),
                 })}
-                onSubmit={async (values) => {
+                onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                      console.log(values)
-                    //   await axios.post((`http://rekapp.net:8090/users`), values, {
-                    //     headers: {
-                    //     Authorization: `Bearer ${tag}`,
-                    //     }
-                    //     }).then(function (response) {
-                    //         console.log(response)
-                    //     }).catch(function (error) {
-                    //         console.log(error)
-                    //     });
-                        // setStatus({ success: false });
-                        // setSubmitting(false);
+                        setStatus({ success: false });
+                        setSubmitting(true);
+
+                        const response = await fetch('http://127.0.0.1:5000/api/v1/user/signup', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                name: values.first_name + ' ' + values.last_name,
+                                email: values.email,
+                                job_role: values.job_role,
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            toast.success('Colaborador adicionado com sucesso!');
+                            setStatus({ success: true });
+                        } else if (response.status === 401) {
+                            toast.error('Colaborador já consta na base de dados.');
+                            setErrors({ submit: data.error });
+                            setStatus({ success: false });
+                        }
+                        else {
+                            toast.error(data.error);
+                            setErrors({ submit: data.error });
+                            setStatus({ success: false });
+                        }
                     } catch (err) {
-                        console.error(err);
-                        // setStatus({ success: false });
-                        // setErrors({ submit: err.message });
-                        // setSubmitting(false);
+                        setStatus({ success: false });
+                        setErrors({ submit: err.message });
                     }
+                    setSubmitting(false);
                 }}
                 
             >
@@ -92,17 +136,17 @@ export default function ModalCollaborator() {
                                     <OutlinedInput
                                         id="fname-collaborator"
                                         type="name"
-                                        value={values.firstName}
-                                        name="firstName"
+                                        value={values.first_name}
+                                        name="first_name"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         placeholder="John"
                                         fullWidth
-                                        error={Boolean(touched.firstName && errors.firstName)}
+                                        error={Boolean(touched.first_name && errors.first_name)}
                                     />
-                                    {touched.firstName && errors.firstName && (
+                                    {touched.first_name && errors.first_name && (
                                         <FormHelperText error id="helper-text-fname-collaborator">
-                                            {errors.firstName}
+                                            {errors.first_name}
                                         </FormHelperText>
                                     )}
                                 </Stack>
@@ -113,22 +157,22 @@ export default function ModalCollaborator() {
                                     <OutlinedInput
                                         id="lname-collaborator"
                                         type="name"
-                                        value={values.lastName}
-                                        name="lastName"
+                                        value={values.last_name}
+                                        name="last_name"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         placeholder="Wick"
                                         fullWidth
-                                        error={Boolean(touched.lastName && errors.lastName)}
+                                        error={Boolean(touched.last_name && errors.last_name)}
                                     />
-                                    {touched.lastName && errors.lastName && (
+                                    {touched.last_name && errors.last_name && (
                                         <FormHelperText error id="helper-text-lname-collaborator">
-                                            {errors.lastName}
+                                            {errors.last_name}
                                         </FormHelperText>
                                     )}
                                 </Stack>
                             </Grid>
-                            <Grid item xs={12} md={12}>
+                            <Grid item xs={12} md={props.admin ? 6 : 12}>
                                 <Stack spacing={1}>
                                     <InputLabel htmlFor="email-collaborator">E-mail*</InputLabel>
                                     <OutlinedInput
@@ -149,32 +193,74 @@ export default function ModalCollaborator() {
                                     )}
                                 </Stack>
                             </Grid>
-                            <Grid item xs={12} md={12}>
+                            {
+                                props.admin ?
+                                    <Grid item xs={12} md={6}>
+                                        <Stack spacing={1}>
+                                            <InputLabel htmlFor="password-collaborator">Senha*</InputLabel>
+                                            <OutlinedInput
+                                                id="password-collaborator"
+                                                type="password"
+                                                value={values.password}
+                                                name="password"
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                fullWidth
+                                            />
+                                            {touched.password && errors.password && (
+                                                <FormHelperText error id="helper-text-password-collaborator">
+                                                    {errors.password}
+                                                </FormHelperText>
+                                            )}
+                                        </Stack>
+                                    </Grid>
+                                :
+                                    null
+                            }
+                            <Grid item xs={12} md={props.admin ? 6 : 12}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="role-collaborator">Cargo*</InputLabel>
+                                    <InputLabel htmlFor="job-role">Cargo*</InputLabel>
                                     <OutlinedInput
-                                        id="role-collaborator"
-                                        type="role"
-                                        value={values.role}
-                                        name="role"
+                                        id="job-role"
+                                        type="job_role"
+                                        value={values.job_role}
+                                        name="job_role"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         placeholder="Desenvolvedor"
                                         fullWidth
-                                        error={Boolean(touched.role && errors.role)}
+                                        error={Boolean(touched.job_role && errors.job_role)}
                                     />
-                                    {touched.role && errors.role && (
-                                        <FormHelperText error id="helper-text-role-collaborator">
-                                            {errors.role}
+                                    {touched.job_role && errors.job_role && (
+                                        <FormHelperText error id="helper-text-job-role">
+                                            {errors.job_role}
                                         </FormHelperText>
                                     )}
                                 </Stack>
                             </Grid>
-                            {errors.submit && (
-                                <Grid item xs={12}>
-                                    <FormHelperText error>{errors.submit}</FormHelperText>
-                                </Grid>
-                            )}
+                            {
+                                props.admin ?
+                                    <Grid item xs={12} md={6}>
+                                        <Stack spacing={1}>
+                                            <InputLabel htmlFor="system-role">Tipo de usuário*</InputLabel>
+                                            <Select
+                                                id="system-role"
+                                                onChange={handleChange}
+                                                value={values.system_role}
+                                                name="system_role"
+                                            >
+                                                <MenuItem value={0}>Colaborador</MenuItem>
+                                                {
+                                                    system_role.map((el) => (
+                                                        <MenuItem value={el.id}>{el.name}</MenuItem>
+                                                    ))
+                                                }
+                                            </Select>
+                                        </Stack>
+                                    </Grid>
+                                :
+                                    null
+                            }
                             <Grid item xs={12}>
                                 <AnimateButton>
                                     <Button

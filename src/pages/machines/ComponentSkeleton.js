@@ -15,9 +15,11 @@ const ComponentSkeleton = ({ children }) => {
         setLoading(false);
     }, []);
 
+    const [title, setTitle] = useState('');
+
     const skeletonCard = (
         <MainCard
-            title={<Skeleton sx={{ width: { xs: 120, md: 180 } }} />}
+            title={title}
             secondary={<Skeleton animation="wave" variant="circular" width={24} height={24} />}
             codeHighlight={false}
         >
@@ -29,6 +31,12 @@ const ComponentSkeleton = ({ children }) => {
             </Stack>
         </MainCard>
     );
+
+    useEffect(() => {
+        if (!isLoading) {
+            setTitle("");
+        }
+    }, [isLoading]);
 
     return (
         <>

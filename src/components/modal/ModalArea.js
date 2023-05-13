@@ -27,7 +27,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export default function ModalArea() {
+export default function ModalArea({ updateSquadsData }) {
   const [open, setOpen] = useState(false);
   const [squadsData, setSquadsData] = useState([]);
   const token = localStorage.getItem('token')
@@ -109,6 +109,7 @@ export default function ModalArea() {
                 
                         if (response.ok) {
                             toast.success('Setor adicionado com sucesso!');
+                            updateSquadsData();
                             fetchData();
                             setStatus({ success: true });
                         } else if (response.status === 401) {
