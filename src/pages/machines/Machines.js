@@ -1,3 +1,5 @@
+// packages
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import jwtDecode from 'jwt-decode';
 
@@ -10,10 +12,6 @@ import ComponentSkeleton from './ComponentSkeleton';
 import ModalCollaborator from 'components/modal/ModalCollaborator';
 import ModalArea from 'components/modal/ModalArea';
 import ModalAddCollaborator from 'components/modal/ModalAddCollaborator';
-
-// data
-import squads from 'data/squads.json'
-import { useEffect, useState } from 'react';
 
 
 function ShadowBox({ addMachine, id, name, role, updateSquadsData, sx }) {

@@ -21,7 +21,6 @@ import { Formik } from 'formik';
 
 // project import
 import AnimateButton from 'components/@extended/AnimateButton';
-import { fetchUsers } from './ModalAddCollaborator';
 
 // toast
 import { ToastContainer, toast } from 'react-toastify';
