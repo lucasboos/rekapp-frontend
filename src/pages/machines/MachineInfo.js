@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 // material-ui
 import {
@@ -75,6 +76,9 @@ const status = [
 const DashboardDefault = () => {
     const [value, setValue] = useState('today');
     const [slot, setSlot] = useState('week');
+    const location = useLocation();
+    const { state } = location;
+    console.log('userData', state);
 
     const handleExclude = () => {
         // Excluir máquina

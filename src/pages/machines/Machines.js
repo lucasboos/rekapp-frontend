@@ -1,5 +1,6 @@
 // packages
 import { useEffect, useState } from 'react';
+import { useNavigate  } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import jwtDecode from 'jwt-decode';
 
@@ -14,7 +15,13 @@ import ModalArea from 'components/modal/ModalArea';
 import ModalAddCollaborator from 'components/modal/ModalAddCollaborator';
 
 
-function ShadowBox({ addMachine, id, name, role, updateSquadsData, sx }) {
+function ShadowBox({ addMachine, userData, id, name, role, updateSquadsData, sx }) {
+    const navigate = useNavigate ();
+
+    const handleClick = () => {
+        navigate('/machines/info', { state: userData });
+    };
+
     if (addMachine) {
         return (
             <MainCard border={true} sx={sx} >
@@ -25,7 +32,11 @@ function ShadowBox({ addMachine, id, name, role, updateSquadsData, sx }) {
         );
     } else {
         return (
-            <Link href="machines/info" underline="none">
+            <Link
+                underline="none"
+                onClick={handleClick}
+                sx={{ cursor: 'pointer' }}
+            >
                 <MainCard border={true} sx={sx} >
                     <Stack spacing={1} justifyContent="center" alignItems="center">
                         <Typography variant="h6">{name}</Typography>
@@ -116,7 +127,7 @@ const Machines = () => {
                                     {
                                         el.users.map((user, userIndex) => (
                                             <Grid item xs={6} sm={4} md={3} lg={2} key={userIndex}>
-                                                <ShadowBox name={user.name} role={user.job_role} />
+                                                <ShadowBox userData={user} name={user.name} role={user.job_role} />
                                             </Grid>
                                         ))
                                     }
