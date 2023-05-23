@@ -75,6 +75,7 @@ export default function ModalCollaborator(props) {
                     last_name: '',
                     job_role: '',
                     password: '',
+                    windows_user: '',
                     area_id: '',
                     role_id: '',
                     machine_id: ''
@@ -83,6 +84,7 @@ export default function ModalCollaborator(props) {
                     email: Yup.string().max(255).required('É necessário preencher o email'),
                     first_name: Yup.string().max(255).required('É necessário preencher o nome'),
                     last_name: Yup.string().max(255).required('É necessário preencher o sobrenome'),
+                    windows_user: Yup.string().max(255).required('É necessário preencher o usuário do windows'),
                     job_role: Yup.string().max(255).required('É necessário preencher o cargo'),
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -99,6 +101,7 @@ export default function ModalCollaborator(props) {
                             body: JSON.stringify({
                                 name: values.first_name + ' ' + values.last_name,
                                 email: values.email,
+                                windows_user: values.windows_user,
                                 job_role: values.job_role,
                             })
                         });
@@ -171,7 +174,28 @@ export default function ModalCollaborator(props) {
                                     )}
                                 </Stack>
                             </Grid>
-                            <Grid item xs={12} md={props.admin ? 6 : 12}>
+                            <Grid item xs={6} md={6}>
+                                <Stack spacing={1}>
+                                    <InputLabel htmlFor="wuser-collaborator">Nome de usuário do windows*</InputLabel>
+                                    <OutlinedInput
+                                        id="wuser-collaborator"
+                                        type="name"
+                                        value={values.windows_user}
+                                        name="windows_user"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        placeholder="JOHN-92183"
+                                        fullWidth
+                                        error={Boolean(touched.windows_user && errors.windows_user)}
+                                    />
+                                    {touched.windows_user && errors.windows_user && (
+                                        <FormHelperText error id="helper-text-wuser-collaborator">
+                                            {errors.windows_user}
+                                        </FormHelperText>
+                                    )}
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={6} md={6}>
                                 <Stack spacing={1}>
                                     <InputLabel htmlFor="email-collaborator">E-mail*</InputLabel>
                                     <OutlinedInput
