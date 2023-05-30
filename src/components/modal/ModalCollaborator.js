@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import {
@@ -42,6 +42,7 @@ const system_role = [
 export default function ModalCollaborator(props) {
   const token = localStorage.getItem('token')
   const [open, setOpen] = useState(false);
+  const [ownerlessUserData, setOwnerlessUserData] = useState({})
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,6 +51,28 @@ export default function ModalCollaborator(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const ownerlessUser = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/api/v1/user/configure`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setOwnerlessUserData(data);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  useEffect(() => {
+    ownerlessUser();
+  }, []);
 
   return (
     <div>
