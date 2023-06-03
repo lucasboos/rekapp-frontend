@@ -93,7 +93,7 @@ const DashboardDefault = () => {
                     spacing={1}
                     justifyContent={'flex-end'}
                 >
-                    <ModalEditMachine/>
+                    <ModalEditMachine user={state} />
                     <AnimateButton>
                         <Button
                             disableElevation
