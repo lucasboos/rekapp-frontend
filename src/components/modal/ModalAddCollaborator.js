@@ -63,6 +63,8 @@ export default function ModalAddCollaborator({ id, updateSquadsData }) {
           body: JSON.stringify({
               name: selectedCollaborator.name,
               new_email: selectedCollaborator.email,
+              windows_user: selectedCollaborator.windows_user || null,
+              ip: selectedCollaborator.ip || null,
               job_role: selectedCollaborator.job_role,
               area_id: id
           })
