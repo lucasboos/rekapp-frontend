@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import {
@@ -28,6 +28,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function ModalEditMachine({ user }) {
     const token = localStorage.getItem('token')
     const [open, setOpen] = useState(false);
+    const [machineInfo, setMachineInfo] = useState({})
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -41,6 +42,29 @@ export default function ModalEditMachine({ user }) {
         console.log('handleRequisition')
         // TODO: Faz a requisição para testar comunicação.
     };
+
+    const fetchMachinesInfo = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/api/v1/machine/${user.id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                setMachineInfo(data);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    useEffect(() => {
+        fetchMachinesInfo()
+    }, [])
 
     return (
         <div>
@@ -61,11 +85,11 @@ export default function ModalEditMachine({ user }) {
                 <DialogContent>
                     <Formik
                         initialValues={{
-                            receiver_ip: 'rekapp.net',
-                            receiver_port: 8090,
-                            package_capture_time: 30,
-                            package_capture_interval: 1,
-                            inactivity_threshold: 5,
+                            receiver_ip: machineInfo.receiver_ip || 'rekapp.net',
+                            receiver_port: machineInfo.receiver_port || 8090,
+                            package_capture_time: machineInfo.package_capture_time || 30,
+                            package_capture_interval: machineInfo.package_capture_interval || 1,
+                            inactivity_threshold: machineInfo.inactivity_threshold || 5,
                         }}
                         validationSchema={Yup.object().shape({
                             receiver_ip: Yup.string().max(255).required('É necessário preencher o IP do receptor'),
@@ -99,6 +123,7 @@ export default function ModalEditMachine({ user }) {
 
                                 if (response.ok) {
                                     toast.success('Máquina vinculada com sucesso!');
+                                    fetchMachinesInfo()
                                     setStatus({ success: true });
                                 }
                                 else {
