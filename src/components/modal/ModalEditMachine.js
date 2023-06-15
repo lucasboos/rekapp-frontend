@@ -125,6 +125,7 @@ export default function ModalEditMachine({ user }) {
                                     toast.success('Máquina vinculada com sucesso!');
                                     fetchMachinesInfo()
                                     setStatus({ success: true });
+                                    handleClose();
                                 }
                                 else {
                                     toast.error(data.error);

@@ -73,6 +73,7 @@ export default function ModalAddCollaborator({ id, updateSquadsData }) {
         if (response.ok) {
           updateSquadsData();
           toast.success('Colaborador vinculado com sucesso!');
+          handleClose();
         }
       } catch (error) {
         console.log(error)

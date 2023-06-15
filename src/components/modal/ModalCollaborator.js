@@ -89,7 +89,7 @@ export default function ModalCollaborator(props) {
                     color="primary"
                     onClick={handleClickOpen}
                 >
-                    Adicionar colaborador
+                    Cadastrar colaborador
                 </Button>
             </AnimateButton>
             <Dialog open={open} onClose={handleClose}>
@@ -137,6 +137,7 @@ export default function ModalCollaborator(props) {
                                 if (response.ok) {
                                     toast.success('Colaborador adicionado com sucesso!');
                                     setStatus({ success: true });
+                                    handleClose();
                                 } else if (response.status === 401) {
                                     toast.error('Colaborador já consta na base de dados.');
                                     setErrors({ submit: data.error });

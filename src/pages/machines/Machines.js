@@ -16,7 +16,7 @@ import ModalAddCollaborator from 'components/modal/ModalAddCollaborator';
 
 
 function ShadowBox({ addMachine, userData, id, name, role, updateSquadsData, sx }) {
-    const navigate = useNavigate ();
+    const navigate = useNavigate();
 
     const handleClick = () => {
         navigate('/machines/info', { state: userData });

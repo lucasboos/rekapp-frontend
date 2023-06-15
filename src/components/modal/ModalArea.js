@@ -75,7 +75,7 @@ export default function ModalArea({ updateSquadsData }) {
             color="primary"
             onClick={handleClickOpen}
         >
-            Adicionar setor
+            Cadastrar setor
         </Button>
       </AnimateButton>
       <Dialog open={open} onClose={handleClose}>
@@ -112,6 +112,7 @@ export default function ModalArea({ updateSquadsData }) {
                             updateSquadsData();
                             fetchData();
                             setStatus({ success: true });
+                            handleClose();
                         } else if (response.status === 401) {
                             toast.error('Setor já existe.');
                             setErrors({ submit: data.error });
@@ -135,7 +136,7 @@ export default function ModalArea({ updateSquadsData }) {
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="name-area">Nome da setor*</InputLabel>
+                                    <InputLabel htmlFor="name-area">Nome do setor*</InputLabel>
                                     <OutlinedInput
                                         id="name-area"
                                         type="name"

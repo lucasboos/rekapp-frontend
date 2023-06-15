@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+import { useNavigate  } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -24,11 +25,11 @@ import {
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import ProfileTab from './ProfileTab';
-import SettingTab from './SettingTab';
 
 // assets
-import avatar1 from 'assets/images/users/avatar-1.png';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import avatar1 from 'assets/images/users/bear.png';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -54,11 +55,14 @@ function a11yProps(index) {
 
 const Profile = () => {
     const theme = useTheme();
+    const navigate = useNavigate();
+    const accessToken = localStorage.getItem('token');
+    const decodedToken = accessToken ? jwtDecode(accessToken) : null;
+    const userType = decodedToken ? decodedToken : '';
 
     const handleLogout = async () => {
-        // logout
         localStorage.removeItem('token');
-        return <Navigate to="/login" />;
+        navigate('/login');
     };
 
     const anchorRef = useRef(null);
@@ -99,7 +103,7 @@ const Profile = () => {
             >
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
                     <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
-                    <Typography variant="subtitle1">John Doe</Typography>
+                    <Typography variant="subtitle1">{userType ? userType.name : 'Usuário'}</Typography>
                 </Stack>
             </ButtonBase>
             <Popper
@@ -142,9 +146,9 @@ const Profile = () => {
                                                     <Stack direction="row" spacing={1.25} alignItems="center">
                                                         <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                                                         <Stack>
-                                                            <Typography variant="h6">John Doe</Typography>
+                                                            <Typography variant="h6">{userType ? userType.name : 'Usuário'}</Typography>
                                                             <Typography variant="body2" color="textSecondary">
-                                                                UI/UX Designer
+                                                                {userType ? userType.job_role : 'Administrador'}
                                                             </Typography>
                                                         </Stack>
                                                     </Stack>
@@ -174,28 +178,13 @@ const Profile = () => {
                                                                 textTransform: 'capitalize'
                                                             }}
                                                             icon={<UserOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
-                                                            label="Profile"
+                                                            label="Perfil"
                                                             {...a11yProps(0)}
-                                                        />
-                                                        <Tab
-                                                            sx={{
-                                                                display: 'flex',
-                                                                flexDirection: 'row',
-                                                                justifyContent: 'center',
-                                                                alignItems: 'center',
-                                                                textTransform: 'capitalize'
-                                                            }}
-                                                            icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
-                                                            label="Setting"
-                                                            {...a11yProps(1)}
                                                         />
                                                     </Tabs>
                                                 </Box>
                                                 <TabPanel value={value} index={0} dir={theme.direction}>
                                                     <ProfileTab handleLogout={handleLogout} />
-                                                </TabPanel>
-                                                <TabPanel value={value} index={1} dir={theme.direction}>
-                                                    <SettingTab />
                                                 </TabPanel>
                                             </>
                                         )}
