@@ -63,7 +63,7 @@ const Machines = () => {
 
     const fetchAreas = async () => {
         try {
-          const response = await fetch(`http://127.0.0.1:5000/api/v1/area/user/area/${userType.area_id}`, {
+          const response = await fetch(`http://127.0.0.1:5000/api/v1/area/user/area/${userType.id}`, {
               method: 'GET',
               headers: {
                   'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const Machines = () => {
     };
 
     useEffect(() => {
-        if (userType.area_id) {
+        if (userType.id) {
             fetchAreas()
         }
     }, [])
@@ -100,7 +100,7 @@ const Machines = () => {
                         direction="row"
                         spacing={1}
                     >
-                        <ModalArea updateSquadsData={updateSquadsData} />
+                        <ModalArea updateSquadsData={updateSquadsData} userType={userType} />
                         <ModalCollaborator admin={false} />
                     </Stack>
                 </Grid>

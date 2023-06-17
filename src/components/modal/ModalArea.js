@@ -11,8 +11,7 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-  Select,
-  MenuItem
+  Typography
 } from '@mui/material';
 
 // third party
@@ -27,7 +26,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export default function ModalArea({ updateSquadsData }) {
+export default function ModalArea({ updateSquadsData, userType }) {
   const [open, setOpen] = useState(false);
   const [squadsData, setSquadsData] = useState([]);
   const token = localStorage.getItem('token')
@@ -83,7 +82,6 @@ export default function ModalArea({ updateSquadsData }) {
           <Formik
                 initialValues={{
                     name: '',
-                    areaUp: -1,
                 }}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().max(255).required('É necessário preencher o nome do setor'),
@@ -101,7 +99,7 @@ export default function ModalArea({ updateSquadsData }) {
                             },
                             body: JSON.stringify({
                                 name: values.name,
-                                area_up_id: values.areaUp == -1 ? null : values.areaUp
+                                responsible_id: userType.id
                             })
                         });
 
@@ -134,8 +132,8 @@ export default function ModalArea({ updateSquadsData }) {
                 {({errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit}>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} md={6}>
-                                <Stack spacing={1}>
+                            <Grid item xs={12} md={12}>
+                                <Stack spacing={2}>
                                     <InputLabel htmlFor="name-area">Nome do setor*</InputLabel>
                                     <OutlinedInput
                                         id="name-area"
@@ -144,7 +142,7 @@ export default function ModalArea({ updateSquadsData }) {
                                         name="name"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        placeholder="Setor de desenvolvimento"
+                                        placeholder="Digite o nome do setor"
                                         fullWidth
                                         error={Boolean(touched.name && errors.name)}
                                     />
@@ -153,22 +151,11 @@ export default function ModalArea({ updateSquadsData }) {
                                             {errors.name}
                                         </FormHelperText>
                                     )}
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="area-up">Setor superior</InputLabel>
-                                    <Select
-                                        id="area-up"
-                                        onChange={handleChange}
-                                        value={values.areaUp}
-                                        name="areaUp"
-                                    >
-                                        <MenuItem value={-1}>Sem setor superior</MenuItem>
-                                        {squadsData.map((el) => (
-                                            <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>
-                                        ))}
-                                    </Select>
+                                    <Typography variant="subtitle1" color="textSecondary" style={{ width: 'auto' }}>
+                                        Ao cadastrar um novo setor, ele estará atrelado a você.
+                                        Isso significa que você será responsável por gerenciar e
+                                        tomar decisões relacionadas a esse setor.
+                                    </Typography>
                                 </Stack>
                             </Grid>
                             {errors.submit && (

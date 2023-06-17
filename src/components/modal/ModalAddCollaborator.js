@@ -66,6 +66,7 @@ export default function ModalAddCollaborator({ id, updateSquadsData }) {
               windows_user: selectedCollaborator.windows_user || null,
               ip: selectedCollaborator.ip || null,
               job_role: selectedCollaborator.job_role,
+              dashboard_uid: selectedCollaborator.dashboard_uid,
               area_id: id
           })
         });
