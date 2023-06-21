@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate  } from 'react-router-dom';
 
 // material-ui
 import {
@@ -8,7 +9,10 @@ import {
     Grid,
     Stack,
     Typography,
-    TextField
+    TextField,
+    Dialog,
+    DialogContent,
+    DialogActions
 } from '@mui/material';
 
 import AnimateButton from 'components/@extended/AnimateButton';
@@ -21,6 +25,9 @@ const DashboardDefault = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedDateTime, setSelectedDateTime] = useState(null);
     const [iframeSrc, setIframeSrc] = useState('');
+    const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+    const token = localStorage.getItem('token');
+    const navigate = useNavigate();
     const location = useLocation();
     const { state } = location;
 
@@ -40,8 +47,27 @@ const DashboardDefault = () => {
         return { start: startOfDayTimestamp, end: endOfDayTimestamp };
     };
 
-    const handleExclude = () => {
-        // Excluir máquina
+    const handleExclude = async () => {
+        setShowConfirmationDialog(true);
+    };
+
+    const handleCancelExclude = () => {
+        setShowConfirmationDialog(false);
+    };
+
+    const handleConfirmExclude = async () => {
+        try {
+            await fetch(`http://127.0.0.1:5000/api/v1/user/${state.email}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            navigate('/');
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleDateChange = (event) => {
@@ -81,7 +107,7 @@ const DashboardDefault = () => {
                             color="error"
                             onClick={handleExclude}
                         >
-                            Excluir máquina
+                            Remover Colaborador
                         </Button>
                     </AnimateButton>
                 </Stack>
@@ -157,6 +183,42 @@ const DashboardDefault = () => {
                     </Box>
                 </MainCard>
             </Grid>
+
+            <Dialog open={showConfirmationDialog} onClose={handleCancelExclude}>
+                <DialogContent>
+                    <Typography variant="h5" align="center">
+                        Tem certeza de que deseja remover este colaborador?
+                    </Typography>
+                </DialogContent>
+                <DialogActions style={{ justifyContent: 'center' }}>
+                    <Box sx={{ mt: 1 }}>
+                        <Stack direction="row" spacing={2}>
+                            <AnimateButton>
+                                <Button
+                                    disableElevation
+                                    onClick={handleCancelExclude}
+                                    size="large"
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Cancelar
+                                </Button>
+                            </AnimateButton>
+                            <AnimateButton>
+                                <Button
+                                    disableElevation
+                                    onClick={handleConfirmExclude}
+                                    size="large"
+                                    variant="contained"
+                                    color="error"
+                                >
+                                    Confirmar
+                                </Button>
+                            </AnimateButton>
+                        </Stack>
+                    </Box>
+                </DialogActions>
+            </Dialog>
         </Grid>
     );
 };
