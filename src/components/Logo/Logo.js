@@ -1,12 +1,11 @@
 // material-ui
-import logo from 'assets/images/logo/logo.png'
+import logo from 'assets/images/logo/logo_rekapp-bg.png'
 
 const Logo = () => {
     return (
         <>
-            {/* <img src={logo} alt="Rekapp" width="100" /> */}
-            <div width="100" height="20">
-                <h1>Rekapp</h1>
+            <div style={{ marginTop: '10px' }}>
+                <img src={logo} alt="Rekapp" width="140" />
             </div>
         </>
     );
