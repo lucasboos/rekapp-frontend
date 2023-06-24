@@ -85,10 +85,6 @@ export default function ModalAddCollaborator({ id, updateSquadsData }) {
     }
   };
 
-  useEffect(() => {
-    fetchUsers()
-  }, [])
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -97,6 +93,11 @@ export default function ModalAddCollaborator({ id, updateSquadsData }) {
     setOpen(false);
   };
 
+  useEffect(() => {
+    if (open) {
+      fetchUsers();
+    }
+  }, [open]);
 
   function renderRow(props) {
     const { index, style } = props;

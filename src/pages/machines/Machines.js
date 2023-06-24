@@ -92,19 +92,15 @@ const Machines = () => {
 
     return (
         <ComponentSkeleton>
-            {/* TODO: RESOLVER ISSO PRA FICAR DINÂMICO */}
-            { userType != 8
-                &&
-                <Grid item xs={12} sx={{ mb: 2.25 }}>
-                    <Stack
-                        direction="row"
-                        spacing={1}
-                    >
-                        <ModalArea updateSquadsData={updateSquadsData} userType={userType} />
-                        <ModalCollaborator admin={false} />
-                    </Stack>
-                </Grid>
-            }
+            <Grid item xs={12} sx={{ mb: 2.25 }}>
+                <Stack
+                    direction="row"
+                    spacing={1}
+                >
+                    <ModalArea updateSquadsData={updateSquadsData} userType={userType} />
+                    <ModalCollaborator />
+                </Stack>
+            </Grid>
             <Grid container spacing={3}>
                 { squadsData &&
                     squadsData.map((el, index) => (

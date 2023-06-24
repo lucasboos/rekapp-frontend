@@ -41,7 +41,7 @@ const system_role = [
 ]
 
 
-export default function ModalCollaborator(props) {
+export default function ModalCollaborator() {
     const token = localStorage.getItem('token');
     const [open, setOpen] = useState(false);
     const [ownerlessUserData, setOwnerlessUserData] = useState({});
@@ -277,31 +277,7 @@ export default function ModalCollaborator(props) {
                                             )}
                                         </Stack>
                                     </Grid>
-                                    {
-                                        props.admin ?
-                                            <Grid item xs={12} md={6}>
-                                                <Stack spacing={1}>
-                                                    <InputLabel htmlFor="password-collaborator">Senha*</InputLabel>
-                                                    <OutlinedInput
-                                                        id="password-collaborator"
-                                                        type="password"
-                                                        value={values.password}
-                                                        name="password"
-                                                        onBlur={handleBlur}
-                                                        onChange={handleChange}
-                                                        fullWidth
-                                                    />
-                                                    {touched.password && errors.password && (
-                                                        <FormHelperText error id="helper-text-password-collaborator">
-                                                            {errors.password}
-                                                        </FormHelperText>
-                                                    )}
-                                                </Stack>
-                                            </Grid>
-                                            :
-                                            null
-                                    }
-                                    <Grid item xs={12} md={props.admin ? 6 : 12}>
+                                    <Grid item xs={12}>
                                         <Stack spacing={1}>
                                             <InputLabel htmlFor="job-role">Cargo*</InputLabel>
                                             <OutlinedInput
@@ -322,29 +298,6 @@ export default function ModalCollaborator(props) {
                                             )}
                                         </Stack>
                                     </Grid>
-                                    {
-                                        props.admin ?
-                                            <Grid item xs={12} md={6}>
-                                                <Stack spacing={1}>
-                                                    <InputLabel htmlFor="system-role">Tipo de usuário*</InputLabel>
-                                                    <Select
-                                                        id="system-role"
-                                                        onChange={handleChange}
-                                                        value={values.system_role}
-                                                        name="system_role"
-                                                    >
-                                                        <MenuItem value={0}>Colaborador</MenuItem>
-                                                        {
-                                                            system_role.map((el) => (
-                                                                <MenuItem value={el.id}>{el.name}</MenuItem>
-                                                            ))
-                                                        }
-                                                    </Select>
-                                                </Stack>
-                                            </Grid>
-                                            :
-                                            null
-                                    }
                                     <Grid item xs={12}>
                                         <AnimateButton>
                                             <Button
