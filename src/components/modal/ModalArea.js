@@ -41,7 +41,7 @@ export default function ModalArea({ updateSquadsData, userType }) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/v1/area/squads', {
+      const response = await fetch('https://api.rekapp.net/api/v1/area/squads', {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export default function ModalArea({ updateSquadsData, userType }) {
                         setStatus({ success: false });
                         setSubmitting(true);
 
-                        const response = await fetch('http://127.0.0.1:5000/api/v1/area/create', {
+                        const response = await fetch('https://api.rekapp.net/api/v1/area/create', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

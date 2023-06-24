@@ -36,7 +36,7 @@ const AuthLogin = () => {
                         setStatus({ success: false });
                         setSubmitting(true);
                         
-                        const response = await fetch('http://127.0.0.1:5000/api/v1/user/signin', {
+                        const response = await fetch('https://api.rekapp.net/api/v1/user/signin', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

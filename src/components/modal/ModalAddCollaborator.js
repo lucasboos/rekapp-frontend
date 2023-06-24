@@ -34,7 +34,7 @@ export default function ModalAddCollaborator({ id, updateSquadsData }) {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/v1/user/`, {
+      const response = await fetch(`https://api.rekapp.net/api/v1/user/`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default function ModalAddCollaborator({ id, updateSquadsData }) {
   const updateUser = async () => {
     if (selectedCollaborator) {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/api/v1/user/${selectedCollaborator.email}`, {
+        const response = await fetch(`https://api.rekapp.net/api/v1/user/${selectedCollaborator.email}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
