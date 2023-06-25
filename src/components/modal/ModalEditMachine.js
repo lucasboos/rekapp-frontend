@@ -39,8 +39,7 @@ export default function ModalEditMachine({ user }) {
     };
 
     const handleRequisition = () => {
-        console.log('handleRequisition')
-        // TODO: Faz a requisição para testar comunicação.
+        toast.error('Falha no contato com o colaborador.');
     };
 
     const fetchMachinesInfo = async () => {
